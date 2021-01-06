@@ -1,20 +1,20 @@
-###
-#
-# Written by 
-#   Andrew Miller (andrewmiller0728@gmail.com)
-#   January 6, 2021
-#
-# Code modified from 
-#   "CircuitPython Animated Holiday Wreath Lights"
-# By 
-#   Kattni Rembor
-#   https://learn.adafruit.com/circuitpython-animated-holiday-wreath-lights/code
-#
-# APIs and documentation can be found at
-#   https://circuitpython.readthedocs.io/projects/magtag/en/latest/index.html#
-#   https://circuitpython.readthedocs.io/en/6.0.x/docs/index.html
-#
-###
+####
+    #
+    # Written by 
+    #   Andrew Miller (andrewmiller0728@gmail.com)
+    #   January 6, 2021
+    #
+    # Code modified from 
+    #   "CircuitPython Animated Holiday Wreath Lights"
+    # By 
+    #   Kattni Rembor
+    #   https://learn.adafruit.com/circuitpython-animated-holiday-wreath-lights/code
+    #
+    # APIs and documentation can be found at
+    #   https://circuitpython.readthedocs.io/projects/magtag/en/latest/index.html#
+    #   https://circuitpython.readthedocs.io/en/6.0.x/docs/index.html
+    #
+####
 
 import time
 import board
