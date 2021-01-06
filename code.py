@@ -1,3 +1,21 @@
+###
+#
+# Written by 
+#   Andrew Miller (andrewmiller0728@gmail.com)
+#   January 6, 2021
+#
+# Code modified from 
+#   "CircuitPython Animated Holiday Wreath Lights"
+# By 
+#   Kattni Rembor
+#   https://learn.adafruit.com/circuitpython-animated-holiday-wreath-lights/code
+#
+# APIs and documentation can be found at
+#   https://circuitpython.readthedocs.io/projects/magtag/en/latest/index.html#
+#   https://circuitpython.readthedocs.io/en/6.0.x/docs/index.html
+#
+###
+
 import time
 import board
 import digitalio
@@ -10,7 +28,7 @@ from adafruit_led_animation.animation.solid import Solid
 from adafruit_led_animation.animation.colorcycle import ColorCycle
 from adafruit_led_animation.sequence import AnimationSequence, AnimateOnce
 from adafruit_led_animation.group import AnimationGroup
-from adafruit_led_animation.color import RED, ORANGE, YELLOW, GREEN, BLUE, PURPLE, WHITE, GOLD
+from adafruit_led_animation.color import RED, ORANGE, YELLOW, GREEN, BLUE, PURPLE, WHITE, GOLD, AMBER
 
 
 ###   Neopixel Strip   ###
@@ -85,10 +103,10 @@ animations = AnimationSequence(
     ),
     AnimationGroup(
         Solid(boardPixels, WHITE),
-        Solid(stripPixels, WHITE)
+        Solid(stripPixels, AMBER)
     ),
     AnimationGroup(
-        Solid(boardPixels, 0),
+        Solid(boardPixels, AMBER),
         Solid(stripPixels, 0),
     ),
     auto_clear=True,
@@ -100,25 +118,40 @@ animations = AnimationSequence(
 
 magtag.set_background("/led.bmp")
 
-magtag.add_text(text_color=0x000000, text_position=(0, 10), text_scale=2)
-magtag.set_text(" Light Selector:", auto_refresh=False)
+magtag.add_text(text_color=0x000000, text_position=(5, 10), text_scale=2)
+magtag.set_text("Light Selector:", auto_refresh=False)
 
-magtag.add_text(text_color=0x000000, text_position=(0, 65))
-magtag.set_text("   - A: Rainbow Cycle\n"
-                "   - B: Comet\n"
-                "   - C: Solid White\n"
-                "   - D: All Off",
+magtag.add_text(text_color=0x000000, text_position=(25, 65))
+magtag.set_text("A: Rainbow Cycle\n"
+                "B: Comet\n"
+                "C: Amber\n"
+                "D: Dim",
                 index=1,
                 auto_refresh=False)
-                
+
 magtag.add_text(text_color=0x000000, text_position=(0, 120))
 magtag.set_text("    A           B           C           D", index=2)
+
+magtag.add_text(text_color=0x000000, text_position=(250, 10))
+magtag.set_text("{} V".format("-4.20"), index=3)
 
 
 ###   Main Loop   ###
  # Loops continuously while the program is running
 
+timeStart = time.time()
+timeDelta = time.time() - timeStart
+
 while True:
+
+    # Update battery level every <refreshDelay> seconds or on button press
+    refreshDelay = 60
+    timeDelta = time.time() - timeStart
+    if timeDelta > refreshDelay:
+        timeStart = time.time()
+        magtag.set_text("{} V".format(round(magtag.peripherals.battery, 2)), index=3)
+
+    # Animate lights
     if magtag.peripherals.button_a_pressed:
         animations.activate(0)
     elif magtag.peripherals.button_b_pressed:
@@ -128,4 +161,6 @@ while True:
     elif magtag.peripherals.button_d_pressed:
         animations.activate(3)
     animations.animate()
+    
+    # Sleep CPU
     time.sleep(0.005)
