@@ -16,19 +16,20 @@
     #
 ####
 
+
 import time
 import board
 import digitalio
 import neopixel
-from adafruit_magtag.magtag import MagTag
 
-from adafruit_led_animation.animation.comet import Comet
-from adafruit_led_animation.animation.sparkle import Sparkle
-from adafruit_led_animation.animation.solid import Solid
 from adafruit_led_animation.animation.colorcycle import ColorCycle
-from adafruit_led_animation.sequence import AnimationSequence, AnimateOnce
+from adafruit_led_animation.animation.comet import Comet
+from adafruit_led_animation.animation.solid import Solid
+from adafruit_led_animation.animation.sparkle import Sparkle
+from adafruit_led_animation.color import (AMBER, BLUE, GOLD, GREEN, ORANGE, PURPLE, RED, WHITE, YELLOW)
 from adafruit_led_animation.group import AnimationGroup
-from adafruit_led_animation.color import RED, ORANGE, YELLOW, GREEN, BLUE, PURPLE, WHITE, GOLD, AMBER
+from adafruit_led_animation.sequence import AnimateOnce, AnimationSequence
+from adafruit_magtag.magtag import MagTag
 
 
 ###   Neopixel Strip   ###
@@ -38,11 +39,12 @@ stripPin = board.D10
 stripCnt = 30
 
 
-###   Brightness   ###
- # Defines brightness values (0-100%) for board and strip
+###   Display Screen   ###
+ # Defines brightness values (0-100%) for board & strip and the refresh delay value
 
 boardBrightness = 0.75
 stripBrightness = 0.5
+refreshDelay = 60
 
 
 ###   Animation - Color Cycle   ###
@@ -145,7 +147,6 @@ timeDelta = time.time() - timeStart
 while True:
 
     # Update battery level every <refreshDelay> seconds or on button press
-    refreshDelay = 60
     timeDelta = time.time() - timeStart
     if timeDelta > refreshDelay:
         timeStart = time.time()
